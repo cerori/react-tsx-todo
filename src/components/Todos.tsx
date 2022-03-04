@@ -7,6 +7,7 @@ import { Todo } from '../App';
 
 const Todos = () => {
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [input, setInput] = useState('');
 
   const nextId = useRef(1);
 
@@ -36,10 +37,24 @@ const Todos = () => {
     setTodos(() => []);
   }, []);
 
+  const onChange = useCallback((e) => {
+    setInput(e.target.value);
+  }, []);
+
+  const onSubmit = useCallback(
+    (e) => {
+      e.preventDefault();
+
+      onInsert(input);
+      setInput('');
+    },
+    [onInsert, input],
+  );
+
   return (
     <div>
       <TodoHeader />
-      <TodoInput onInsert={onInsert} />
+      <TodoInput input={input} onChange={onChange} onSubmit={onSubmit} />
       <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
       <TodoFooter onClearAll={onClearAll} />
     </div>
