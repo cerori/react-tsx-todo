@@ -2,7 +2,7 @@ import TodoHeader from './TodoHeader';
 import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import TodoFooter from './TodoFooter';
-import { useState, useRef } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { Todo } from '../App';
 
 const Todos = () => {
@@ -10,7 +10,7 @@ const Todos = () => {
 
   const nextId = useRef(1);
 
-  const onInsert = (text: string) => {
+  const onInsert = useCallback((text: string) => {
     const todo = {
       id: nextId.current,
       text,
@@ -20,21 +20,21 @@ const Todos = () => {
     setTodos((todos) => todos.concat(todo));
 
     nextId.current += 1;
-  };
+  }, []);
 
-  const onRemove = (id: number) => {
+  const onRemove = useCallback((id: number) => {
     setTodos((todos) => todos.filter((todo) => todo.id !== id));
-  };
+  }, []);
 
-  const onToggle = (id: number) => {
+  const onToggle = useCallback((id: number) => {
     setTodos((todos) =>
       todos.map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo)),
     );
-  };
+  }, []);
 
-  const onClearAll = () => {
+  const onClearAll = useCallback(() => {
     setTodos(() => []);
-  };
+  }, []);
 
   return (
     <div>
