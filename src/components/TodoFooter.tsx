@@ -1,14 +1,15 @@
 import styles from '../Todo.module.css';
+import { TodoConsumer } from '../contexts/todo';
 
-interface Props {
-  readonly onClearAll: () => void;
-}
-
-const TodoFooter = ({ onClearAll }: Props) => {
+const TodoFooter = () => {
   return (
-    <div className={styles.footer}>
-      <button onClick={() => onClearAll()}>모두 삭제</button>
-    </div>
+    <TodoConsumer>
+      {(value) => (
+        <div className={styles.footer}>
+          <button onClick={() => value.actions.onClearAll()}>모두 삭제</button>
+        </div>
+      )}
+    </TodoConsumer>
   );
 };
 
