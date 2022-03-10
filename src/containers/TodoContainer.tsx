@@ -48,11 +48,11 @@ export default connect(
     input: state.input,
     todos: state.todos,
   }),
-  (dispatch) => ({
-    changeTodoInput: (input: string) => dispatch(changeTodoInput(input)),
-    addTodo: (input: string) => dispatch(addTodo(input)),
-    toggleTodoStatus: (id: number) => dispatch(toggleTodoStatus(id)),
-    removeTodo: (id: number) => dispatch(removeTodo(id)),
-    clearAllTodos: () => dispatch(clearAllTodos()),
-  }),
+  {
+    changeTodoInput,
+    addTodo,
+    toggleTodoStatus,
+    removeTodo,
+    clearAllTodos,
+  },
 )(TodoContainer);
