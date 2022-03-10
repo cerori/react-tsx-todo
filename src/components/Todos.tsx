@@ -3,15 +3,18 @@ import TodoInput from './TodoInput';
 import TodoList from './TodoList';
 import TodoFooter from './TodoFooter';
 import { Todo } from '../App';
+import TodoFilter from './TodoFilter';
 
 interface Props {
   readonly input: string;
-  readonly todos: Todo[];
+  readonly todos?: Todo[];
   readonly onRemove: (id: number) => void;
   readonly onToggle: (id: number) => void;
   readonly onClearAll: () => void;
   readonly onInsert: (input: string) => void;
   readonly onChangeInput: (input: string) => void;
+  readonly filter: string;
+  readonly onChangeFilter: (filter: string) => void;
 }
 
 const Todos = ({
@@ -22,12 +25,15 @@ const Todos = ({
   onToggle,
   onRemove,
   onClearAll,
+  filter,
+  onChangeFilter,
 }: Props) => {
   return (
     <div>
       <TodoHeader />
       <TodoInput input={input} onInsert={onInsert} onChangeInput={onChangeInput} />
       <TodoList todos={todos} onRemove={onRemove} onToggle={onToggle} />
+      <TodoFilter filter={filter} onChangeFilter={onChangeFilter} />
       <TodoFooter onClearAll={onClearAll} />
     </div>
   );

@@ -9,19 +9,20 @@ const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO_STATUS = 'TOGGLE_TODO_STATUS';
 const REMOVE_TODO = 'REMOVE_TODO';
 const CLEAR_ALL_TODOS = 'CLEAR_ALL_TODOS';
-
-export const restore = createAction(RESTORE, (data: string) => data);
+const CHANGE_FILTER = 'CHANGE_FILTER';
 
 export interface TodoState {
   input: string;
   todos: Todo[];
   nextTodoId: number;
+  filter: string;
 }
 
 const initialState: TodoState = {
   input: '',
   todos: [],
   nextTodoId: 1,
+  filter: 'ALL',
 };
 
 export const changeTodoInput = createAction(CHANGE_TODO_INPUT, (input: string) => input);
@@ -36,6 +37,10 @@ export const toggleTodoStatus = createAction(TOGGLE_TODO_STATUS, (id: number) =>
 export const removeTodo = createAction(REMOVE_TODO, (id: number) => id);
 
 export const clearAllTodos = createAction(CLEAR_ALL_TODOS);
+
+export const restore = createAction(RESTORE, (data: string) => data);
+
+export const changeFilter = createAction(CHANGE_FILTER, (filter: string) => filter);
 
 const todos = createReducer(initialState, {
   // 상태 복원 액션 처리
@@ -74,6 +79,10 @@ const todos = createReducer(initialState, {
   [CLEAR_ALL_TODOS]: (state, action) => ({
     ...state,
     todos: [],
+  }),
+  [CHANGE_FILTER]: (state, { payload: filter }) => ({
+    ...state,
+    filter,
   }),
 });
 
