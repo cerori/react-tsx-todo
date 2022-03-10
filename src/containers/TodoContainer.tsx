@@ -1,5 +1,5 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   changeTodoInput,
   addTodo,
@@ -9,50 +9,32 @@ import {
 } from '../modules/todos';
 import Todos from '../components/Todos';
 import { TodoState } from '../modules/todos';
-import { Todo } from '../App';
 
-interface Props {
-  readonly input: string;
-  readonly todos: Todo[];
-  readonly removeTodo: (id: number) => void;
-  readonly toggleTodoStatus: (id: number) => void;
-  readonly clearAllTodos: () => void;
-  readonly addTodo: (input: string) => void;
-  readonly changeTodoInput: (input: string) => void;
-}
+const TodoContainer = () => {
+  const { input, todos } = useSelector((state: TodoState) => ({
+    input: state.input,
+    todos: state.todos,
+  }));
 
-const TodoContainer = ({
-  input,
-  todos,
-  changeTodoInput,
-  addTodo,
-  toggleTodoStatus,
-  removeTodo,
-  clearAllTodos,
-}: Props) => {
+  const dispatch = useDispatch();
+
+  const onChangeInput = useCallback((input) => dispatch(changeTodoInput(input)), [dispatch]);
+  const onInsert = useCallback((input) => dispatch(addTodo(input)), [dispatch]);
+  const onToggle = useCallback((id) => dispatch(toggleTodoStatus(id)), [dispatch]);
+  const onRemove = useCallback((id) => dispatch(removeTodo(id)), [dispatch]);
+  const onClearAll = useCallback(() => dispatch(clearAllTodos()), [dispatch]);
+
   return (
     <Todos
       input={input}
       todos={todos}
-      onChangeInput={changeTodoInput}
-      onInsert={addTodo}
-      onToggle={toggleTodoStatus}
-      onRemove={removeTodo}
-      onClearAll={clearAllTodos}
+      onChangeInput={onChangeInput}
+      onInsert={onInsert}
+      onToggle={onToggle}
+      onRemove={onRemove}
+      onClearAll={onClearAll}
     />
   );
 };
 
-export default connect(
-  (state: TodoState) => ({
-    input: state.input,
-    todos: state.todos,
-  }),
-  {
-    changeTodoInput,
-    addTodo,
-    toggleTodoStatus,
-    removeTodo,
-    clearAllTodos,
-  },
-)(TodoContainer);
+export default TodoContainer;
