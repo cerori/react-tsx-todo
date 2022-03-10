@@ -2,11 +2,15 @@ import { Todo } from '../App';
 import { createAction } from 'redux-actions';
 import { createReducer } from 'typesafe-actions';
 
+const RESTORE = 'RESTORE';
+
 const CHANGE_TODO_INPUT = 'CHANGE_TODO_INPUT';
 const ADD_TODO = 'ADD_TODO';
 const TOGGLE_TODO_STATUS = 'TOGGLE_TODO_STATUS';
 const REMOVE_TODO = 'REMOVE_TODO';
 const CLEAR_ALL_TODOS = 'CLEAR_ALL_TODOS';
+
+export const restore = createAction(RESTORE, (data: string) => data);
 
 export interface TodoState {
   input: string;
@@ -34,6 +38,17 @@ export const removeTodo = createAction(REMOVE_TODO, (id: number) => id);
 export const clearAllTodos = createAction(CLEAR_ALL_TODOS);
 
 const todos = createReducer(initialState, {
+  // 상태 복원 액션 처리
+  [RESTORE]: (state, action) => {
+    console.log(action);
+    console.log(action.payload.todos);
+    console.log(action.payload.nextTodoId);
+    return {
+      ...state,
+      todos: action.payload.todos,
+      nextTodoId: action.payload.nextTodoId,
+    };
+  },
   [CHANGE_TODO_INPUT]: (state, { payload: input }) => ({
     ...state,
     input,
